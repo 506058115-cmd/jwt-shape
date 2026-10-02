@@ -49,7 +49,7 @@ def decode_object(segment):
     try:
         raw = base64.b64decode(padded, altchars=b"-_", validate=True)
         value = json.loads(raw.decode("utf-8"), parse_constant=reject_constant)
-    except (ValueError, UnicodeError, json.JSONDecodeError, base64.binascii.Error):
+    except (RecursionError, ValueError, UnicodeError, base64.binascii.Error):
         raise ValueError("header or payload is not valid UTF-8 JSON") from None
     if not isinstance(value, dict):
         raise ValueError("header and claims must be JSON objects")
